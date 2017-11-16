@@ -28,7 +28,6 @@
         </dependency> -->
     </dependencies>
 
-    <artifactId>schedule-log</artifactId>
-
+    <artifactId>logging</artifactId>
 
 </project>
