@@ -1,4 +1,4 @@
-package org.myan.log.aspect;
+package org.myan.log.config;
 
 import ch.qos.logback.classic.Logger;
 import org.aopalliance.aop.Advice;
@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
@@ -17,8 +17,9 @@ import javax.annotation.PostConstruct;
  * Created by myan on 11/16/2017.
  * Intellij IDEA
  */
-public class MethodLogAspect implements MethodInterceptor {
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(MethodLogAspect.class);
+class MethodLogInterceptor implements MethodInterceptor {
+    // FIXME use inject logger instead of new intance
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(MethodLogInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
@@ -31,15 +32,15 @@ public class MethodLogAspect implements MethodInterceptor {
     }
 }
 
-@Component
-class MethodLogPointcut extends AbstractPointcutAdvisor{
+@Configuration
+public class MethodLogConfiguration extends AbstractPointcutAdvisor{
     private Pointcut pointcut;
     private Advice advice;
 
     @PostConstruct
     public void init() {
         this.pointcut = new AnnotationMatchingPointcut(MethodLog.class);
-        this.advice = new MethodLogAspect();
+        this.advice = new MethodLogInterceptor();
     }
 
     @Override

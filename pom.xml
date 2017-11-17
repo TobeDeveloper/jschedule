@@ -6,9 +6,6 @@
 	<groupId>org.myan</groupId>
 	<artifactId>jschedule</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<modules>
-		<module>logging</module>
-	</modules>
 	<packaging>pom</packaging>
 
 	<name>Jschedule</name>
@@ -58,6 +55,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>org.myan</groupId>
+            <artifactId>logging</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -2,6 +2,7 @@ package org.myan.log.config;
 
 import ch.qos.logback.classic.spi.LoggingEventVO;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -11,7 +12,8 @@ import javax.jms.ObjectMessage;
  * Intellij IDEA
  */
 @Configuration
-public class ActiveMQConfig {
+@EnableJms
+public class ActiveMQConfiguration {
 
     @JmsListener(destination = "jsche-queue")
     public void receiveTopic(ObjectMessage message) {

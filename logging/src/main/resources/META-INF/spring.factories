@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.myan.log.config.MethodLogConfiguration,\
+org.myan.log.config.ActiveMQConfiguration,\
+org.myan.log.config.AccessLogConfiguration
