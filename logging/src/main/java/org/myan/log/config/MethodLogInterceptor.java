@@ -18,7 +18,7 @@ class MethodLogInterceptor implements MethodInterceptor {
         long start = System.currentTimeMillis();
         Object result = invocation.proceed();
         long end = System.currentTimeMillis();
-        LOGGER.info("[Method log]:({}), time cost:({})", methodName, (end - start));
+        LOGGER.info("[Method log]:{}, time cost:{} ms", methodName, (end - start));
         return result;
     }
 }

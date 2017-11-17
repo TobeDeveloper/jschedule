@@ -6,6 +6,7 @@ Mainly used 3-rd party libraries:
 - Junit
 - Mybatis
 - Logback
+- Freemarker
 
 CI tools:
 - Travis CI

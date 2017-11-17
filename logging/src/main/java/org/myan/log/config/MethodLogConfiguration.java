@@ -1,11 +1,7 @@
 package org.myan.log.config;
 
-import ch.qos.logback.classic.Logger;
 import org.aopalliance.aop.Advice;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 import org.myan.log.annotation.MethodLog;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
@@ -25,7 +21,7 @@ public class MethodLogConfiguration extends AbstractPointcutAdvisor {
 
     @PostConstruct
     public void init() {
-        this.pointcut = new AnnotationMatchingPointcut(MethodLog.class);
+        this.pointcut = new AnnotationMatchingPointcut(null, MethodLog.class);
         this.advice = new MethodLogInterceptor();
     }
 

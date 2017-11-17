@@ -26,7 +26,7 @@ public class ActiveMQConfiguration {
             if (messageBody instanceof LoggingEventVO) {
                 LoggingEventVO log = (LoggingEventVO) messageBody;
                 // process for our logging event here.
-                String logging = String.format("L:%s, M:%s\n", log.getLevel().levelStr, log.getMessage());
+                String logging = String.format("Level:%s, Message:%s\n", log.getLevel().levelStr, log.getMessage());
                 System.out.println(logging);
             }
         } catch (JMSException e) {
