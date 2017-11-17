@@ -17,7 +17,7 @@
             org.apache.activemq.jndi.ActiveMQInitialContextFactory
         </InitialContextFactoryName>
         <!--<filter>-->
-            <!--&lt;!&ndash;log filter&ndash;&gt;-->
+        <!--&lt;!&ndash;log filter&ndash;&gt;-->
         <!--</filter>-->
         <ProviderURL>tcp://127.0.0.1:61616</ProviderURL>
         <QueueConnectionFactoryBindingName>ConnectionFactory</QueueConnectionFactoryBindingName>
@@ -25,7 +25,7 @@
     </appender>
 
     <logger name="org.myan">
-        <level value="${log_level}" />
+        <level value="${log_level}"/>
     </logger>
 
     <root level="info">

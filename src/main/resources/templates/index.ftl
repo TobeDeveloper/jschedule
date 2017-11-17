@@ -5,6 +5,6 @@
     <title>Index</title>
 </head>
 <body>
-    <h2>Some content</h2>
+<h2>Some content</h2>
 </body>
 </html>

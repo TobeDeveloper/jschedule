@@ -1,4 +1,4 @@
-package org.myan.jschedule.web;
+package org.myan.jschedule.web.controller;
 
 import org.myan.log.annotation.MethodLog;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Intellij IDEA
  */
 @Controller
-public class BasicController {
+public class PageRedirectController extends BaseController {
 
     @RequestMapping("/")
     @MethodLog
