@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JscheduleApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JscheduleApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JscheduleApplication.class, args);
+    }
 }

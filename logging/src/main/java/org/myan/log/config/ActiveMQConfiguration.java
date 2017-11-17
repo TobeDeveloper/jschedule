@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.LoggingEventVO;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
+
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 
@@ -19,12 +20,12 @@ public class ActiveMQConfiguration {
     public void receiveTopic(ObjectMessage message) {
         try {
             Object messageBody = message.getObject();
-            if(messageBody instanceof LoggingEventVO){
-                LoggingEventVO log = (LoggingEventVO)messageBody;
+            if (messageBody instanceof LoggingEventVO) {
+                LoggingEventVO log = (LoggingEventVO) messageBody;
                 // process for our logging event here.
                 String logging = String.format("L:%s, M:%s\n", log.getLevel().levelStr, log.getMessage());
                 System.out.println(logging);
-            } else{
+            } else {
                 System.out.println("Won't process...");
             }
         } catch (JMSException e) {

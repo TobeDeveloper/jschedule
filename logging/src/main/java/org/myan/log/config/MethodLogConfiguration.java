@@ -17,25 +17,12 @@ import javax.annotation.PostConstruct;
  * Created by myan on 11/16/2017.
  * Intellij IDEA
  */
-class MethodLogInterceptor implements MethodInterceptor {
-    // FIXME use inject logger instead of new intance
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(MethodLogInterceptor.class);
-
-    @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
-        String methodName = invocation.getMethod().getName();
-        long start = System.currentTimeMillis();
-        Object result = invocation.proceed();
-        long end = System.currentTimeMillis();
-        logger.info("**Method log:({}), time cost:({})", methodName, (end - start));
-        return result;
-    }
-}
-
 @Configuration
-public class MethodLogConfiguration extends AbstractPointcutAdvisor{
+public class MethodLogConfiguration extends AbstractPointcutAdvisor {
+    private final static Logger LOGGER = (Logger) LoggerFactory.getLogger(MethodLogConfiguration.class);
     private Pointcut pointcut;
     private Advice advice;
+
 
     @PostConstruct
     public void init() {
@@ -52,4 +39,18 @@ public class MethodLogConfiguration extends AbstractPointcutAdvisor{
     public Advice getAdvice() {
         return advice;
     }
+
+    private class MethodLogInterceptor implements MethodInterceptor {
+
+        @Override
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            String methodName = invocation.getMethod().getName();
+            long start = System.currentTimeMillis();
+            Object result = invocation.proceed();
+            long end = System.currentTimeMillis();
+            LOGGER.info("**Method log:({}), time cost:({})", methodName, (end - start));
+            return result;
+        }
+    }
+
 }
