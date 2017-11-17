@@ -6,3 +6,10 @@ Mainly used 3-rd party libraries:
 - Junit
 - Mybatis
 - Logback
+
+CI tools:
+- Travis CI
+- Codecov
+- Github
+
+Front pages are designed with bootstrap.

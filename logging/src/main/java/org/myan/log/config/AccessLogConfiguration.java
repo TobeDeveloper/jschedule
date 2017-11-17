@@ -13,7 +13,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
+import java.util.Date;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by myan on 11/17/2017.
@@ -25,6 +27,7 @@ import java.sql.Date;
 public class AccessLogConfiguration {
     private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(AccessLogConfiguration.class);
     private AccessLog log;
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Pointcut("@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController)")
     public void logPoint() {
@@ -35,56 +38,25 @@ public class AccessLogConfiguration {
     public void logBefore() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
+        lock.writeLock().lock(); // lock here.
+        log = new AccessLog();
         log.setDateStamp(new Date(System.currentTimeMillis()));
         log.setClientIp(AppUtil.getClientIp(request));
         log.setRequestMethod(request.getMethod());
         log.setPath(request.getRequestURI());
-        log = new AccessLog();
     }
 
     @AfterReturning(returning = "r", pointcut = "logPoint()")
     public void logAfterReturning(Object r) {
         log.setResponseStatus("OK");
-        LOGGER.info(log.toString() + "Response class: {}", r.getClass().getName());
+        LOGGER.info(log.getLogString() + "Response class: {}", r.getClass().getName());
+        lock.writeLock().unlock();
     }
 
     @AfterThrowing(throwing = "e", pointcut = "logPoint()")
     public void logAfterThrowing(Throwable e) {
         log.setResponseStatus("EXCEPTION");
-        LOGGER.error(log.toString() + "Exception message: {}", e.getMessage());
-    }
-
-    private class AccessLog {
-        private Date dateStamp;
-        private String clientIp;
-        private String requestMethod;
-        private String path;
-        private String responseStatus;
-
-        void setDateStamp(Date dateStamp) {
-            this.dateStamp = dateStamp;
-        }
-
-        void setClientIp(String clientIp) {
-            this.clientIp = clientIp;
-        }
-
-        void setRequestMethod(String requestMethod) {
-            this.requestMethod = requestMethod;
-        }
-
-        void setPath(String path) {
-            this.path = path;
-        }
-
-        void setResponseStatus(String responseStatus) {
-            this.responseStatus = responseStatus;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("[System access log]: %s-IP:%s, request method: %s, path: %s, response status: %s\r\n",
-                    dateStamp.toString(), clientIp, requestMethod.toUpperCase(), path, responseStatus);
-        }
+        LOGGER.error(log.getLogString() + "Exception message: {}", e.getMessage());
+        lock.writeLock().unlock();
     }
 }

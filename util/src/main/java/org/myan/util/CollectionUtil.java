@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by myan on 11/17/2017.
  * Intellij IDEA
  */
-public final class CollectionUtil {
+public final class  CollectionUtil {
     public static boolean isEmpty(Collection<?> collection) {
         return CollectionUtils.isEmpty(collection);
     }

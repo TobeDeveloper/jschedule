@@ -1,6 +1,8 @@
 package org.myan.log.config;
 
+import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEventVO;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.annotation.JmsListener;
@@ -15,6 +17,7 @@ import javax.jms.ObjectMessage;
 @Configuration
 @EnableJms
 public class ActiveMQConfiguration {
+    private final Logger logger = (Logger) LoggerFactory.getLogger(ActiveMQConfiguration.class);
 
     @JmsListener(destination = "jsche-queue")
     public void receiveTopic(ObjectMessage message) {
@@ -25,11 +28,9 @@ public class ActiveMQConfiguration {
                 // process for our logging event here.
                 String logging = String.format("L:%s, M:%s\n", log.getLevel().levelStr, log.getMessage());
                 System.out.println(logging);
-            } else {
-                System.out.println("Won't process...");
             }
         } catch (JMSException e) {
-            e.printStackTrace();
+            logger.error("Error occurs while transferring log to activeMQ.", e);
         }
     }
 }
