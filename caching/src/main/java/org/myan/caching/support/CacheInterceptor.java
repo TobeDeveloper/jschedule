@@ -22,13 +22,13 @@ public class CacheInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();// the target method we want to enhance.
         Cacheable cacheable = method.getAnnotation(Cacheable.class);
-        CacheObject cache = cacheManager.getCacheObject(cacheable.name());
+        CacheObject cache = cacheManager.getCacheObject(cacheable.value());
         if(cache != null) {
             return cache.get(method.getReturnType());
         } else {
             Object result = invocation.proceed();
             // add the result to manager.
-            cacheManager.updateCacahe(cacheable.name(), result);
+            cacheManager.updateCache(cacheable.value(), result);
             return result;
         }
     }

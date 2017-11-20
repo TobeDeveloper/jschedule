@@ -12,8 +12,27 @@ public class CacheManager {
 
     }
 
-    public void updateCacahe(String name, Object result) {
+    public void updateCache(String name, Object result) {
+        synchronized (this.cacheMap) {
 
+            cacheMap.put(name, new CacheObject() {
+                @Override
+                public String getName() {
+                    return name;
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> T get(Class<T> clazz) {
+                    return (T) result;
+                }
+
+                @Override
+                public <K, T> void put(Class<K> key, Class<T> clazz) {
+
+                }
+            });
+        }
     }
 
     public static class InstanceHolder{
@@ -30,31 +49,8 @@ public class CacheManager {
         CacheObject object = this.cacheMap.get(name);
         if(object != null) {
             return object;
-        } else{
-            synchronized (this.cacheMap) {
-                // put the missing cache
-                CacheObject newCache = new CacheObject() {
-                    @Override
-                    public String getName() {
-                        return name;
-                    }
-
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public <T> T get(Class<T> clazz) {
-                        return (T) this;
-                    }
-
-                    @Override
-                    public <K, T> void put(Class<K> key, Class<T> clazz) {
-
-                    }
-                };
-                this.cacheMap.put(name, newCache);
-
-                return newCache;
-            }
         }
+        return null;
     }
 
 

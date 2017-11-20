@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cacheable {
     // cache marker for enhanced method.
-    String name();
+    String value();
 }

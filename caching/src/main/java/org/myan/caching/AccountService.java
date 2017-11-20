@@ -1,5 +1,6 @@
 package org.myan.caching;
 
+import org.myan.caching.support.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class AccountService {
         return account;
     }
 
+    @Cacheable("accounts")
     public Account getAccountById(int id) {
         Account result = cm.get(String.valueOf(id));
         if(result != null){
