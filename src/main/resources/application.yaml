@@ -13,6 +13,7 @@ spring:
   freemarker:
     template-loader-path: classpath:/templates/
     charset: UTF-8
+    content-type: text/html
 
 server:
   port: 8001

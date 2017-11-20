@@ -6,7 +6,7 @@ package org.myan.jschedule.web.exception;
  */
 public class BasicException extends RuntimeException {
 
-    protected String errorCode;
+    private String errorCode;
 
     public BasicException(String errorCode, String errorMessage) {
         super(errorMessage);
