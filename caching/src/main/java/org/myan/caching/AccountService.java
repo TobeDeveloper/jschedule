@@ -1,7 +1,7 @@
 package org.myan.caching;
 
-import org.myan.caching.support.CacheReload;
-import org.myan.caching.support.Cacheable;
+import org.myan.caching.annotation.CacheReload;
+import org.myan.caching.annotation.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class AccountService {
 
     @CacheReload("accounts")
     public void reloadCacheObject() {
-
+        logger.info("Reloading cache...");
     }
 
 }

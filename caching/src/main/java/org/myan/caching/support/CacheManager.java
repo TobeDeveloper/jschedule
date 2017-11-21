@@ -35,6 +35,13 @@ public class CacheManager {
         }
     }
 
+    public void reloadCache(String name) {
+        synchronized (this.cacheMap) {
+            if(this.cacheMap.containsKey(name))
+                cacheMap.remove(name);
+        }
+    }
+
     public static class InstanceHolder{
         private final static CacheManager INSTANCE = new CacheManager();
 

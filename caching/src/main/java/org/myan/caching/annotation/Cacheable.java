@@ -1,4 +1,4 @@
-package org.myan.caching.support;
+package org.myan.caching.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

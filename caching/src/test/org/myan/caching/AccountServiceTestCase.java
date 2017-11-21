@@ -7,14 +7,12 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.junit.Assert.*;
 
@@ -53,6 +51,8 @@ public class AccountServiceTestCase {
         service.getAccountById(1);
 
         service.reloadCacheObject();
+        service.getAccountById(1);
+        service.getAccountById(1);
     }
 }
 
