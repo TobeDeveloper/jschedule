@@ -1,5 +1,6 @@
 package org.myan.caching;
 
+import org.myan.caching.support.CacheReload;
 import org.myan.caching.support.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,18 +37,17 @@ public class AccountService {
 
     @Cacheable("accounts")
     public Account getAccountById(int id) {
-        Account result = cm.get(String.valueOf(id));
-        if(result != null){
-            logger.info("Get data from cache...");
-            return result;
-        }
+//        Account result = cm.get(String.valueOf(id));
+//        if(result != null){
+//            logger.info("Get data from cache...");
+//            return result;
+//        }
         // now get from db;
         Optional<Account> optional = getFromDB(id);
         if(!optional.isPresent())
             throw new IllegalStateException(String.format("Can not find data for id:%d", id));
-        Account account = optional.get();
-        cm.updateCache(String.valueOf(id), account);// sync cache.
-        return account;
+        //cm.updateCache(String.valueOf(id), account);// sync cache.
+        return optional.get();
     }
 
     private Optional<Account> getFromDB(int id) {
@@ -62,6 +62,11 @@ public class AccountService {
 
     public void reload() {
         cm.evictAll();
+    }
+
+    @CacheReload("accounts")
+    public void reloadCacheObject() {
+
     }
 
 }
