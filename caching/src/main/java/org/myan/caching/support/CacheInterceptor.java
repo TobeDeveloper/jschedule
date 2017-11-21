@@ -1,6 +1,7 @@
 package org.myan.caching.support;
 
 import org.aopalliance.aop.Advice;
+import org.aopalliance.intercept.Joinpoint;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.myan.caching.annotation.CacheReload;
@@ -14,7 +15,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -31,19 +35,21 @@ public class CacheInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();// the target method we want to enhance.
         Cacheable cacheable = method.getAnnotation(Cacheable.class);
-        CacheObject cache = cacheManager.getCacheObject(cacheable.value());
+        // should execute real method for different keys.
+        Object key = invocation.getArguments()[cacheable.key()];
+        Cache cache = cacheManager.getCacheObject(cacheable.value(), key);
         if(cache != null) {
-            Assert.isTrue(cache.getName().equals(cacheable.value()), "Invalid cache name.");
             logger.info("Get data from cache...");
-            return cache.get(method.getReturnType());
+            return cache.getValue();
         } else {
             Object result = invocation.proceed();
             // add the result to manager.
             lock.readLock().lock();
-            cacheManager.updateCache(cacheable.value(), result);
+            cacheManager.updateCache(cacheable.value(), key, result);
             lock.readLock().unlock();
             return result;
         }
+
     }
 
 }

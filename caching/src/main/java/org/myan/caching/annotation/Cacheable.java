@@ -17,4 +17,6 @@ import java.lang.annotation.Target;
 public @interface Cacheable {
     // cache marker for enhanced method.
     String value();
+
+    int key();
 }

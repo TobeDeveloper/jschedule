@@ -35,7 +35,7 @@ public class AccountService {
         return account;
     }
 
-    @Cacheable("accounts")
+    @Cacheable(value = "accounts", key=0)
     public Account getAccountById(int id) {
 //        Account result = cm.get(String.valueOf(id));
 //        if(result != null){

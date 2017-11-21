@@ -1,6 +1,8 @@
 package org.myan.caching.support;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -12,26 +14,16 @@ public class CacheManager {
 
     }
 
-    public void updateCache(String name, Object result) {
+    public void updateCache(String name, Object key, Object result) {
         synchronized (this.cacheMap) {
-
-            cacheMap.put(name, new CacheObject() {
-                @Override
-                public String getName() {
-                    return name;
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> T get(Class<T> clazz) {
-                    return (T) result;
-                }
-
-                @Override
-                public <K, T> void put(Class<K> key, Class<T> clazz) {
-
-                }
-            });
+            Set<Cache> cacheObjects = cacheMap.get(name);
+            Cache cache = new Cache(key, result);
+            if(cacheObjects == null){
+                cacheMap.put(name, new LinkedHashSet<>());
+                cacheMap.get(name).add(cache);
+            } else {
+                cacheObjects.add(cache);
+            }
         }
     }
 
@@ -50,15 +42,19 @@ public class CacheManager {
         }
     }
 
-    private final Map<String, CacheObject> cacheMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<Cache>> cacheMap = new ConcurrentHashMap<>();
 
-    public CacheObject getCacheObject(String name) {
-        CacheObject object = this.cacheMap.get(name);
-        if(object != null) {
-            return object;
+    public Cache getCacheObject(String name, Object key) {
+        Set<Cache> caches = this.cacheMap.get(name);
+        if(caches != null) {
+            for (Cache cache : caches) {
+                if(cache.getKey() instanceof Integer &&
+                        cache.getKey().equals(key)){
+                    return cache;
+                }
+            }
         }
         return null;
     }
-
 
 }
